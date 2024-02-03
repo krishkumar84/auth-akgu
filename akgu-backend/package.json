@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node -r dotenv/config app.js",
-    "dev": "nodemon -r dotenv/config server.js"
+    "dev": "nodemon -r dotenv/config server.js",
+    "build" : "npm i"
+
   },
   "keywords": [],
   "author": "",
