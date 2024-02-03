@@ -15,7 +15,7 @@ exports.getFaculty = async (req, res, next) => {
 exports.postFaculty = async (req, res, next) => {
     const data = {
         ...req.body,
-        imageUrl: req.body.imageUrl1.length === 0 ? "" : req.body.imageUrl1
+        imageUrl: req.body.imageUrl.length === 0 ? "" : req.body.imageUrl
     }
     try {
         const existing = await faculty.findOne({ imageUrl: req.body.imageUrl })
