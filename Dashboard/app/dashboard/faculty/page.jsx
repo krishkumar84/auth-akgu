@@ -14,7 +14,7 @@ const ProductsPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/faculty');
+        const response = await fetch('https://akgu-backend-7z96.onrender.com/api/faculty');
         const data = await response.json();
         setData(data);
         // console.log(data);
@@ -30,7 +30,7 @@ const ProductsPage = () => {
     // e.preventDefault();
 
     try {
-      const responseDelete = await fetch(`http://localhost:5000/api/faculty/${id}`, {
+      const responseDelete = await fetch(`https://akgu-backend-7z96.onrender.com/api/faculty/${id}`, {
       method : "DELETE",
     })
 

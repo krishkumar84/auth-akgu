@@ -13,7 +13,7 @@ const UsersPage =  () => {
    useEffect(()=>{
        const fetchAchievements = async ()=>{
         try {
-        const response = await fetch('http://localhost:5000/api/achievement');
+        const response = await fetch('https://akgu-backend-7z96.onrender.com/api/achievement');
         const data = await response.json();
         setData(data);
         console.log(data);
