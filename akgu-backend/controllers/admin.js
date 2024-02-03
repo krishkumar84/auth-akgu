@@ -147,8 +147,7 @@ exports.postAchievement = async (req, res, next) => {
         ...req.body,
         title: req.body.title,
         description: req.body.description,
-        imageUrl1: req.body.imageUrl1.length === 0 ? "" : req.body.imageUrl1,
-        imageUrl2: req.body.imageUrl2.length === 0 ? "" : req.body.imageUrl2
+        imageUrl: req.body.imageUrl.length === 0 ? "" : req.body.imageUrl
     }
     try {
         const existing = await achievement.findOne({ title: req.body.title })
