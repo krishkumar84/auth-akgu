@@ -15,6 +15,7 @@ const ProductsPage = () => {
         const response = await fetch('http://localhost:5000/api/faculty');
         const data = await response.json();
         setData(data);
+        console.log(data);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -47,7 +48,7 @@ const ProductsPage = () => {
               <td>
                 <div className={styles.product}>
                   <Image
-                    src={item.image || "/noproduct.jpg"}
+                    src={item.imageUrl || "/noproduct.jpg"}
                     alt=""
                     width={40}
                     height={40}
@@ -61,7 +62,7 @@ const ProductsPage = () => {
               <td>{item.createdAt?.toString().slice(4, 16)}</td>
               <td>
                 <div className={styles.buttons}>
-                  <Link>
+                  <Link href={''}>
                     <button className={`${styles.button} ${styles.view}`}>
                       View
                     </button>
