@@ -9,7 +9,12 @@ const achievementSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    imageUrl: {
+    imageUrl1: {
+        type: String,
+        unique: true,
+        sparse: true
+    },
+    imageUrl2: {
         type: String,
         unique: true,
         sparse: true

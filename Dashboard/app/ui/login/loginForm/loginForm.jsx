@@ -19,7 +19,7 @@ const LoginForm = () => {
     const password = e.target.password.value;
 
     try {
-      const response = await fetch('https://akgu-backend-7z96.onrender.com/admin/login', {
+      const response = await fetch('http://localhost:5000/admin/login', {
         method: 'POST',
         credentials: 'include', 
         headers: {

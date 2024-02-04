@@ -2,29 +2,30 @@ const router = require('express').Router()
 const adminController = require('../controllers/admin')
 const authorization = require('../middlewares/authorization')
 
-router.get('/faculty',  adminController.getFaculty)
+router.get('/faculty', authorization('member'), adminController.getFaculty)
 
-router.post('/faculty', adminController.postFaculty)
+router.post('/faculty', authorization('admin'), adminController.postFaculty)
 
-router.patch('/faculty', adminController.updateFaculty)
+router.patch('/faculty', authorization('admin'), adminController.updateFaculty)
 
-router.delete('/faculty/:id', adminController.deleteFaculty)
+router.delete('/faculty/:id', authorization('admin'), adminController.deleteFaculty)
 
-router.get('/society',  adminController.getSociety)
+router.get('/society', authorization('member'), adminController.getSociety)
 
-router.post('/society', adminController.postSociety)
+router.post('/society', authorization('admin'), adminController.postSociety)
 
-router.patch('/society', adminController.updateSociety)
+router.patch('/society', authorization('admin'), adminController.updateSociety)
 
-router.delete('/society/:id', adminController.deleteSociety)
+router.delete('/society/:id', authorization('admin'), adminController.deleteSociety)
 
-router.get('/achievement',  adminController.getAchievement)
+router.get('/achievement', authorization('member'), adminController.getAchievement)
 
-router.post('/achievement', adminController.postAchievement)
+router.post('/achievement', authorization('admin'), adminController.postAchievement)
 
-router.patch('/achievement', adminController.updateAchievement)
+router.patch('/achievement', authorization('admin'), adminController.updateAchievement)
 
-router.delete('/achievement/:id', adminController.deleteAchievement)
+router.delete('/achievement/:id', authorization('admin'), adminController.deleteAchievement)
 
-router.post('/upload', adminController.upload)
+router.post('/upload', authorization('admin'), adminController.upload)
+
 module.exports = router

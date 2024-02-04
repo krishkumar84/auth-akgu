@@ -6,7 +6,7 @@ router.post('/login', authController.login)
 
 router.get('/logout', authController.logout)
 
-router.post('/signup', authController.signup)
+router.post('/signup', authorization('admin'), authController.signup)
 
 router.post('/pass/update', authorization('admin'), authController.updatePassword)
 
