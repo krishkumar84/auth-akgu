@@ -1,6 +1,6 @@
 'use client'
-import Search from "@/app/ui/dashboard/search/search";
-import styles from "@/app/ui/dashboard/users/users.module.css";
+// import Search from "@/app/ui/dashboard/search/search";
+import styles from "./users.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -23,12 +23,31 @@ const UsersPage =  () => {
   };
     fetchAchievements();
    },[])
+
+
+   const handleDelete = async (id)=>{
+    // e.preventDefault();
+
+    try {
+      const responseDelete = await fetch(`https://akgu-backend-7z96.onrender.com/api/achievement/${id}`, {
+      method : "DELETE",
+    })
+
+    if (!responseDelete.ok) {
+      throw new Error("error");
+    }
+    router.push("/dashboard/users")
+    
+    } catch (error) {
+      console.log(error);
+    }
+  }
   
 
   return (
     <div className={styles.container}>
       <div className={styles.top}>
-        <Search placeholder="Search for a user..." />
+        {/* <Search placeholder="Search for a user..." /> */}
         <Link href="/dashboard/users/add">
           <button className={styles.addButton}>Add New</button>
         </Link>
@@ -69,8 +88,10 @@ const UsersPage =  () => {
                     </button>
                   </Link>
                   <form >
-                    <input type="hidden" name="id"  />
-                    <button className={`${styles.button} ${styles.delete}`}>
+                    <input value={user._id} type="hidden" name="id"  />
+                    <button onClick={()=>{
+                      handleDelete(user._id)
+                    }} className={`${styles.button} ${styles.delete}`}>
                       Delete
                     </button>
                   </form>

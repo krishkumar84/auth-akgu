@@ -31,11 +31,6 @@ const menuItems = [
         path: "/dashboard/faculty",
         icon: <MdShoppingBag />,
       },
-      {
-        title: "Transactions",
-        path: "/dashboard/transactions",
-        icon: <MdAttachMoney />,
-      },
     ],
   },
 ];
@@ -46,7 +41,7 @@ const Sidebar = () => {
   const handleLogout = async (event)=>{
     event.preventDefault();
     try {
-      const res = await fetch ("https://akgu-backend.onrender.com/admin/logout",{
+      const res = await fetch ("http://localhost:3000/admin/logout",{
       method:"POST",
       headers:{
         "Content-Type":"application/json"
@@ -58,7 +53,7 @@ const Sidebar = () => {
       console.log("logout sucessfully");
     } else {
       throw new Error('Logout was not successful');
-      console.log("cd xd ")
+      console.log("cd xd ");
     }
     }
      catch (error) {

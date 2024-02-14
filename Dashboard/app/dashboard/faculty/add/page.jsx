@@ -1,5 +1,5 @@
 "use client"
-import styles from "@/app/ui/dashboard/products/addProduct/addProduct.module.css";
+import styles from "./addFaculty.module.css";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -22,6 +22,7 @@ const AddProductPage = () => {
 
       if (uploadResponse.data.msg === "Uploaded successfully") {
         console.log("Image uploaded successfully");
+        alert("image upload successfully now upload teacher detail");
         setImageUrl(uploadResponse.data.imageUrl); // Save the image URL
         setUploadSuccess(true);
       } else {
@@ -66,8 +67,10 @@ const AddProductPage = () => {
 
       console.log("Request headers:", res.config.headers);
 
-      if (res.data.msg == "added successfully") {
+      if (res.data === "added successfully") {
         console.log("Faculty added successfully!");
+        alert("Faculty added successfully!");
+        router.push("/dashboard/faculty");
         // You may handle the success case as needed
       } else {
         console.log("Failed to add faculty");
@@ -81,9 +84,10 @@ const AddProductPage = () => {
 
   return (
     <div className={styles.container}>
+      <h1 className={styles.heading}>Upload Faculty </h1>
       <form className={styles.form} onSubmit={handleImg} method="post">
         <input type="file" name="image" />
-        <button type="submit">Upload Image</button>
+        <button className={styles.btn} type="submit">Upload Image</button>
       </form>
 
       <form onSubmit={handleSubmit} className={styles.form}>

@@ -1,6 +1,5 @@
 'use client'
-import { addUser } from "@/app/lib/actions";
-import styles from "@/app/ui/dashboard/users/addUser/addUser.module.css";
+import styles from "./addUser.module.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -22,6 +21,7 @@ const AddUserPage = () => {
 
       if (uploadResponse.data.msg === "Uploaded successfully") {
         console.log("Image uploaded successfully");
+        alert("image upload successfully now upload acheivement detail");
         setImageUrl(uploadResponse.data.imageUrl); 
         setUploadSuccess(true);
       } else {
@@ -61,6 +61,7 @@ const AddUserPage = () => {
 
       if (res.status === 200) {
         console.log("Acheivement added successfully");
+        alert("Acheivement added successfully!");
         router.push("/dashboard/users");
       } else {
         console.log("Acheivement not added");
@@ -73,9 +74,10 @@ const AddUserPage = () => {
   };
   return (
     <div className={styles.container}>
+       <h1 className={styles.heading}>Upload Acheivement </h1>
       <form className={styles.form} onSubmit={handleImg} method="post">
         <input type="file" name="image" />
-        <button type="submit">Upload Image</button>
+        <button className={styles.btn} type="submit">Upload Image</button>
       </form>
       <form onSubmit={handleSubmit} className={styles.form}>
         <input type="text" placeholder="title" name="title" required />

@@ -10,10 +10,7 @@ const societySchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    imageUrl1: {
-        type: String
-    },
-    imageUrl2: {
+    imageUrl: {
         type: String
     }
 }, {timestamps: true})
