@@ -1,6 +1,6 @@
 "use client"
 import styles from "./addFaculty.module.css";
-import { useRouter } from "next/navigation";
+//import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -9,7 +9,7 @@ import axios from "axios";
 const AddProductPage = () => {
   const [imageUrl, setImageUrl] = useState(null);
   const [uploadSuccess, setUploadSuccess] = useState(false); // New state to track upload success
-  const router = useRouter();
+//  const router = useRouter();
 
   const handleImg = async (e) => {
     e.preventDefault();
@@ -70,7 +70,7 @@ const AddProductPage = () => {
       if (res.data === "added successfully") {
         console.log("Faculty added successfully!");
         alert("Faculty added successfully!");
-        router.push("/dashboard/faculty");
+       // router.push("/dashboard/faculty");
         // You may handle the success case as needed
       } else {
         console.log("Failed to add faculty");
