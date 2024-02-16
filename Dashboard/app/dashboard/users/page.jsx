@@ -4,10 +4,12 @@ import styles from "./users.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from 'next/router';
+
 
 const UsersPage =  () => {
 
-
+  const router = useRouter();
   const [data, setData] = useState([]);
 
    useEffect(()=>{

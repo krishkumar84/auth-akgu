@@ -32,7 +32,7 @@ const AddUserPage = () => {
       console.error("Error during image upload request", err);
       window.alert("An error occurred. Please try again.");
       setUploadSuccess(false);
-    };
+    }
   };
 
     useEffect(() => {

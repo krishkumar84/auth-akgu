@@ -6,9 +6,7 @@ import {
   MdDashboard,
   MdSupervisedUserCircle,
   MdShoppingBag,
-  MdAttachMoney,
   MdLogout,
-  MdLogin,
 } from "react-icons/md";
 import { useRouter } from "next/navigation";
 
@@ -53,7 +51,6 @@ const Sidebar = () => {
       console.log("logout sucessfully");
     } else {
       throw new Error('Logout was not successful');
-      console.log("cd xd ");
     }
     }
      catch (error) {
