@@ -1,29 +1,8 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
-
 const User = require('../models/user')
 
-exports.getLogin = (req, res, next) => {
-    return res.status(200).render('auth/login', {
-        page_title: 'Login',
-        invalid_credentials: req.query.u ? true : false,
-        username: req.query.u
-    })
-}
-
-exports.getSignup = (req, res, next) => {
-    return res.status(200).render('auth/signup', {
-        page_title: 'Signup'
-    })
-}
-
-exports.getResetPassword = (req, res, next) => {
-    return res.status(200).render('auth/password/reset', {
-        page_title: 'Reset Password'
-    })
-}
-
-exports.postLogin = async (req, res, next) => {
+exports.login = async (req, res, next) => {
     const { username, password } = req.body
     try {
         const user = await User.findOne({ username })
@@ -33,39 +12,54 @@ exports.postLogin = async (req, res, next) => {
                 const token = jwt.sign({
                     username: user.username,
                     role: user.role
-                }, process.env.JWT_SECRET, { expiresIn: '3d' })
-                return res.status(200).send('logged in successfully')
+                }, process.env.JWT_SECRET, { expiresIn: '2d' })
+                res.cookie('auth', token, {
+                    httpOnly: true,
+                    maxAge: 2*24*60*60*1000,
+                    secure: true,
+                    sameSite: 'None'
+                })
+                return res.cookie('user', user.role , {
+                    httpOnly: true,
+                    maxAge: 2*24*60*60*1000,
+                    secure: true, //changed
+                    sameSite: 'None' //changed
+                }).send('logged in successfully')
             }
         }
         return res.status(500).send('wrong credentials')
     } catch (err) {
-        next(err)
+        next(err) 
     }
 }
 
-exports.getLogout = (req, res, next) => {
-    return res.cookie('auth', '', {
-        httpOnly: true,
-        maxAge: 0
-    }).status(300).redirect('/auth/login')
+exports.logout = (req, res, next) => {
+    res.clearCookie('auth')
+    res.clearCookie('user')
+    res.status(200).send("User Logged out and session ended")
 }
 
-exports.postSignup = async (req, res, next) => {
+exports.signup = async (req, res, next) => {
     const { username, password, email, role } = req.body
     try {
         if (password.length < 8) {
-            return res.status(400).json({
-                message: 'falied'
-            })
+            return res.status(400).json({msg: 'failed' })
         }
+        const chk=await User.findOne({username:req.body.username})
+        if(chk)
+            return res.status(403).json({msg:'Username already exists'})
         const hash = await bcrypt.hash(password, 10)
-        const saved = await new User({ password: hash, username, email, role }).save()
-        return res.status(200).json({
-            message: 'registered',
+        const user = await new User({
+            password: hash, 
+            username, 
+            email, 
+            role 
+        }).save()
+            return res.status(200).json({ msg: 'Signed up successfully',
             data: {
-                username: saved.username,
-                email: saved.email,
-                role: saved.role
+                username: user.username,
+                email: user.email,
+                role: user.role
             }
         })
     } catch (err) {
@@ -73,27 +67,21 @@ exports.postSignup = async (req, res, next) => {
     }
 }
 
-exports.postUpdatePassword = async (req, res, next) => {
-    const { password, new_password, conf_password } = req.body
+exports.updatePassword = async (req, res, next) => {
+    const { password, new_pass, conf_pass } = req.body
     try {
-        if (new_password !== conf_password || new_password.length < 8) {
-            return res.status(400).json({
-                message: 'falied',
-            })
+        if (new_pass !== conf_pass || new_pass.length < 8) {
+            return res.status(400).json({msg: 'Make sure to new pass and confirm pass is same and the password is more than 7 characters'})
         }
         const user = await User.findOne({ username: req.user.username })
-        const match = await bcrypt.compare(password, user.password)
-        if (!match) {
-            return res.status(403).json({
-                message: 'forbidden'
-            })
+        const chk = await bcrypt.compare(password, user.password)
+        if(!chk) {
+            return res.status(403).json({msg: 'Wrong Passs'})
         }
-        const hash = await bcrypt.hash(new_password, 10)
+        const hash = await bcrypt.hash(new_pass, 10)
         user.password = hash
         await user.save()
-        return res.status(200).json({
-            message: 'updated'
-        })
+        return res.status(200).json({msg: 'changed successfully'})
     } catch (err) {
         next(err)
     }

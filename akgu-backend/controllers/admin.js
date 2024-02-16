@@ -13,21 +13,17 @@ exports.getFaculty = async (req, res, next) => {
     }
 }
 exports.postFaculty = async (req, res, next) => {
-    // console.log(req.body.post)
     const data = {
         ...req.body,
-        // fullname: req.body.fullname && req.body.fullname,
-        // post: req.body.post && req.body.post,
-        // degree: req.body.degree && req.body.degree,
         imageUrl: req.body.imageUrl.length === 0 ? undefined : req.body.imageUrl
-    } 
+    }
     try {
-        // console.log(req.body.imageUrl)
         const existing = await faculty.findOne({ imageUrl: req.body.imageUrl })
         if (existing)
             return res.status(403).send("image already exists")
         await new faculty(data).save()
         return res.status(200).send("added successfully")
+        // console.log("running fine")
 
     } catch (err) {
         console.log(err)
@@ -39,16 +35,12 @@ exports.postFaculty = async (req, res, next) => {
 exports.updateFaculty = async (req, res, next) => {
 
     try {
-        // console.log(req.body.imageUrl)
         const existing = await faculty.findOne({ imageUrl: req.body.imageUrl })
         if (!existing)
             return res.status(404).send("This faculty data doesn't exist")
 
         const data = {
             ...req.body,
-            // fullname: req.body.fullname,
-            // post: req.body.post,
-            // degree: req.body.degree,
             imageUrl: req.body.imageUrl.length === 0 ? undefined : req.body.imageUrl
         }
 
@@ -84,17 +76,13 @@ exports.getSociety = async (req, res, next) => {
 
 
 exports.postSociety = async (req, res, next) => {
-    // console.log(req.body.description)
 
     const data = {
         ...req.body,
-        // name: req.body.name,
-        // description: req.body.description,
         imageUrl1: req.body.imageUrl1.length === 0 ? "" : req.body.imageUrl1,
         imageUrl2: req.body.imageUrl2.length === 0 ? "" : req.body.imageUrl2
     }
     try {
-        // console.log(imageUrl1)
         const existing = await society.findOne({ name: req.body.name })
         if (existing) {
             Object.keys(data).forEach(key => existing[key] = data[key])
@@ -117,20 +105,15 @@ exports.updateSociety = async (req, res, next) => {
         const existing = await society.findOne({ name: req.body.name })
         if (!existing)
             return res.status(404).send("This Society data doesn't exist")
-
         const data = {
             ...req.body,
-            name: req.body.name,
-            description: req.body.description,
-            imageUrl1: req.body.imageUrl1,
-            imageUrl2: req.body.imageUrl2
+            imageUrl1: req.body.imageUrl1.length === 0 ? "" : req.body.imageUrl1,
+            imageUrl2: req.body.imageUrl2.length === 0 ? "" : req.body.imageUrl2
         }
-
         Object.keys(data).forEach(key => existing[key] = data[key])
-        const a=await existing.save()
+        const a = await existing.save()
         console.log(a)
         return res.status(200).send("updated successfully")
-
     } catch (err) {
         next(err)
     }
@@ -138,19 +121,18 @@ exports.updateSociety = async (req, res, next) => {
 
 exports.deleteSociety = async (req, res, next) => {
     const id = req.params.id
-    const _id=await society.findOne({ _id: id })
+    const _id = await society.findOne({ _id: id })
     try {
-        if(_id){
+        if (_id) {
             const deleted = await society.findByIdAndDelete(id)
             console.log(deleted)
             return res.status(200).send("deleted successfully")
         }
         return res.status(404).send("Can't find the society details")
-        
     } catch (err) {
         next(err)
-    } 
-} 
+    }
+}
 
 exports.getAchievement = async (req, res, next) => {
     try {
@@ -184,13 +166,10 @@ exports.postAchievement = async (req, res, next) => {
 }
 
 exports.updateAchievement = async (req, res, next) => {
-
     try {
-        // console.log(req.body.imageUrl2)
         const existing = await achievement.findOne({ name: req.body.name })
         if (!existing)
             return res.status(404).send("This Achievment data doesn't exist")
-
         const data = {
             ...req.body,
             name: req.body.name,
@@ -198,12 +177,10 @@ exports.updateAchievement = async (req, res, next) => {
             imageUrl1: req.body.imageUrl1,
             imageUrl2: req.body.imageUrl2
         }
-
         Object.keys(data).forEach(key => existing[key] = data[key])
-        const a=await existing.save()
+        const a = await existing.save()
         console.log(a)
         return res.status(200).send("updated successfully")
-
     } catch (err) {
         next(err)
     }
@@ -231,7 +208,7 @@ exports.upload = function (req, res) {
                 console.log(err)
                 return res.status(500).send("Error occured with cloudinary")
             }
-            return res.status(200).json({msg:"Uploaded successfully",imageUrl:result.url})
+            return res.status(200).json({ msg: "Uploaded successfully", imageUrl: result.url })
         })
     })
 }

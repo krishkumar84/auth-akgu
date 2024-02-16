@@ -1,13 +1,16 @@
-const roles = ['admin', 'member', 'user']
+const user=require('../models/user')
+const roles = ['member','admin']
 
 const authorization = (role) => {
     return (req, res, next) => {
-        // if (!req.user) {
-        //     return res.status(401).redirect('/auth/login')
-        // }
-        if (roles.indexOf(req.user.role) > roles.indexOf(role)) {
+        // console.log(req.cookies.user)
+        if(!req.cookies.user)
+        return res.status(403).json({
+            message: 'User isnt logged in'
+        })
+        if (roles.indexOf(req.cookies.user) < roles.indexOf(role)) {
             return res.status(403).json({
-                message: 'forbidden'
+                message: 'User isnt allowed to access this service'
             })
         }
         next()

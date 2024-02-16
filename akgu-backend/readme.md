@@ -7,7 +7,7 @@ A web portal for managing team member details and event updates, also provides A
 `GET /api/v1/status/`
 ### Response
 ```
-{
+{ 
     message: 'success' | 'failed',
     data: {...}
 }
