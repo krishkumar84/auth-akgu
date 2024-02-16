@@ -1,8 +1,29 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+
 const User = require('../models/user')
 
-exports.login = async (req, res, next) => {
+exports.getLogin = (req, res, next) => {
+    return res.status(200).render('auth/login', {
+        page_title: 'Login',
+        invalid_credentials: req.query.u ? true : false,
+        username: req.query.u
+    })
+}
+
+exports.getSignup = (req, res, next) => {
+    return res.status(200).render('auth/signup', {
+        page_title: 'Signup'
+    })
+}
+
+exports.getResetPassword = (req, res, next) => {
+    return res.status(200).render('auth/password/reset', {
+        page_title: 'Reset Password'
+    })
+}
+
+exports.postLogin = async (req, res, next) => {
     const { username, password } = req.body
     try {
         const user = await User.findOne({ username })
@@ -12,13 +33,8 @@ exports.login = async (req, res, next) => {
                 const token = jwt.sign({
                     username: user.username,
                     role: user.role
-                }, process.env.JWT_SECRET, { expiresIn: '2d' })
-                return res.cookie('auth', token, {
-                    httpOnly: true,
-                    maxAge: 2*24*60*60*1000,
-                    secure: false, //changed
-                    sameSite: 'Lax' //changed
-                }).send('logged in successfully')
+                }, process.env.JWT_SECRET, { expiresIn: '3d' })
+                return res.status(200).send('logged in successfully')
             }
         }
         return res.status(500).send('wrong credentials')
@@ -27,34 +43,29 @@ exports.login = async (req, res, next) => {
     }
 }
 
-exports.logout = (req, res, next) => {
+exports.getLogout = (req, res, next) => {
     return res.cookie('auth', '', {
         httpOnly: true,
         maxAge: 0
-    }).status(300).send('Logged out successfully')
+    }).status(300).redirect('/auth/login')
 }
 
-exports.signup = async (req, res, next) => {
+exports.postSignup = async (req, res, next) => {
     const { username, password, email, role } = req.body
     try {
         if (password.length < 8) {
-            return res.status(400).json({msg: 'failed' })
+            return res.status(400).json({
+                message: 'falied'
+            })
         }
-        const chk=await User.findOne({username:req.body.username})
-        if(chk)
-            return res.status(403).json({msg:'Username already exists'})
         const hash = await bcrypt.hash(password, 10)
-        const user = await new User({
-            password: hash, 
-            username, 
-            email, 
-            role 
-        }).save()
-            return res.status(200).json({ msg: 'Signed up successfully',
+        const saved = await new User({ password: hash, username, email, role }).save()
+        return res.status(200).json({
+            message: 'registered',
             data: {
-                username: user.username,
-                email: user.email,
-                role: user.role
+                username: saved.username,
+                email: saved.email,
+                role: saved.role
             }
         })
     } catch (err) {
@@ -62,21 +73,27 @@ exports.signup = async (req, res, next) => {
     }
 }
 
-exports.updatePassword = async (req, res, next) => {
-    const { password, new_pass, conf_pass } = req.body
+exports.postUpdatePassword = async (req, res, next) => {
+    const { password, new_password, conf_password } = req.body
     try {
-        if (new_pass !== conf_pass || new_pass.length < 8) {
-            return res.status(400).json({msg: 'Make sure to new pass and confirm pass is same and the password is more than 7 characters'})
+        if (new_password !== conf_password || new_password.length < 8) {
+            return res.status(400).json({
+                message: 'falied',
+            })
         }
         const user = await User.findOne({ username: req.user.username })
-        const chk = await bcrypt.compare(password, user.password)
-        if(!chk) {
-            return res.status(403).json({msg: 'Wrong Passs'})
+        const match = await bcrypt.compare(password, user.password)
+        if (!match) {
+            return res.status(403).json({
+                message: 'forbidden'
+            })
         }
-        const hash = await bcrypt.hash(new_pass, 10)
+        const hash = await bcrypt.hash(new_password, 10)
         user.password = hash
         await user.save()
-        return res.status(200).json({msg: 'changed successfully'})
+        return res.status(200).json({
+            message: 'updated'
+        })
     } catch (err) {
         next(err)
     }

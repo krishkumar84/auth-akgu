@@ -19,7 +19,7 @@ const LoginForm = () => {
     const password = e.target.password.value;
 
     try {
-      const response = await fetch('http://localhost:5000/admin/login', {
+      const response = await fetch('https://akgu-backend.vercel.app/admin/login', {
         method: 'POST',
         credentials: 'include', 
         headers: {

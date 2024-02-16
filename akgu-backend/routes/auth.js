@@ -1,13 +1,20 @@
 const router = require('express').Router()
+
 const authController = require('../controllers/auth')
 const authorization = require('../middlewares/authorization')
 
-router.post('/login', authController.login)
+router.get('/login', authController.getLogin)
 
-router.get('/logout', authController.logout)
+router.post('/login', authController.postLogin)
 
-router.post('/signup', authController.signup)
+router.get('/logout', authController.getLogout)
 
-router.post('/pass/update', authorization('admin'), authController.updatePassword)
+router.get('/signup', authorization('admin'), authController.getSignup)
+
+router.post('/signup', authorization('admin'), authController.postSignup)
+
+router.post('/password/update', authorization('member'), authController.postUpdatePassword)
+
+router.get('/password/reset', authorization('member'), authController.getResetPassword)
 
 module.exports = router
