@@ -18,7 +18,7 @@ const AddProductPage = () => {
       const formData = new FormData();
       formData.append('image', e.target.elements.image.files[0]);
 
-      const uploadResponse = await axios.post("https://akgu-backend.vercel.app  /api/upload", formData);
+      const uploadResponse = await axios.post("https://akgu-backend.vercel.app/api/upload", formData);
 
       if (uploadResponse.data.msg === "Uploaded successfully") {
         console.log("Image uploaded successfully");
@@ -54,7 +54,7 @@ const AddProductPage = () => {
 
       const formData = new FormData(e.target);
 
-      const res = await axios.post("https://akgu-backend-7z96.onrender.com/api/faculty", {
+      const res = await axios.post("https://akgu-backend.vercel.app/api/faculty", {
         fullname: formData.get("fullname"),
         post: formData.get("post"),
         degree: formData.get("degree"),
