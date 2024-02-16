@@ -5,11 +5,11 @@ import Link from "next/link";
 // import Search from "@/app/ui/dashboard/search/search";
 //import Pagination from "@/app/ui/dashboard/pagination/pagination";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+//import { useRouter } from "next/navigation";
 
 const ProductsPage = () => {
   const [data, setData] = useState([]);
-  const router = useRouter();
+ // const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,7 +37,7 @@ const ProductsPage = () => {
     if (!responseDelete.ok) {
       throw new Error("error");
     }
-    router.push("/dashboard/faculty")
+  //  router.push("/dashboard/faculty")
     
     } catch (error) {
       console.log(error);
