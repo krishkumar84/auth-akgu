@@ -63,7 +63,7 @@ const UsersPage =  () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((user, index) => (
+          {data.map((user) => (
             <tr key={user._id}>
               <td>
                 <div className={styles.user}>

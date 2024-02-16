@@ -62,7 +62,7 @@ const ProductsPage = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
+          {data.map((item) => (
             <tr key={item._id}>
               <td>
                 <div className={styles.product}>
